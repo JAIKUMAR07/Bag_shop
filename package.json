@@ -1,17 +1,22 @@
 {
   "name": "bag_app",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon app.js"
+    "start": "cross-env DEBUG=development:* nodemon app.js"
   },
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "config": "^4.1.1",
     "cookie-parser": "^1.4.7",
+    "debug": "^4.4.3",
     "express": "^5.1.0",
     "mongoose": "^8.18.1"
+  },
+  "devDependencies": {
+    "cross-env": "^10.0.0"
   }
 }
