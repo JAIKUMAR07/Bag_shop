@@ -9,7 +9,8 @@ const path = require("path"); // Module for handling and transforming file paths
 const ownersRouter = require("./routes/ownersRouter");
 const usersRouter = require("./routes/usersRouter");
 const productsRouter = require("./routes/productsRouter");
-
+const expressSession = require("express-session");
+const flash = require("connect-flash");
 require("dotenv").config();
 
 // Import database connection (mongoose)
@@ -26,6 +27,18 @@ app.use(express.urlencoded({ extended: true }));
 // Middleware to parse cookies from the request headers
 app.use(cookiesParser());
 
+// FLASH MSG KE LIYE SESSION LGTA HAI
+app.use(
+  expressSession({
+    resave: false, // bar bar save n kro
+    saveUninitialized: false,
+    secret:
+      process.env.EXPRESS_SESSION_SECRET ||
+      "fallback_secret_key_for_development",
+  })
+);
+
+app.use(flash()); // and dusre route me bhi flash ka use kr skte
 // Serve static files (CSS, JS, images, etc.) from the "views" folder
 app.use(express.static(path.join(__dirname, "views")));
 
@@ -46,9 +59,9 @@ app.use("/products", productsRouter);
 
 // Default route
 app.get("/", (req, res) => {
-  res.send("Hello World!"); // Send plain text response
+  let error = req.flash("error");
+  res.render("index", { error }); // Render index.ejs page with error messages
 });
-
 // -------------------- SERVER -------------------- //
 
 // Start the server and listen on the specified port
